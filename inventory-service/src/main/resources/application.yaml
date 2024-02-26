@@ -1,0 +1,26 @@
+spring:
+  zipkin:
+    base-url: http://localhost:{port}
+  application:
+    name: inventory-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/inventory-service
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:password@localhost:8761/eureka
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: prometheus

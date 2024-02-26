@@ -1,0 +1,20 @@
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false # we dont want to register the discovery server
+    fetch-registry: false # we dont need to fetch the registry of the server
+    service-url: # for different env
+      defaultZone: http://eureka:password@${eureka.instance.hostname}:${server.port}/eureka
+server:
+  port: 8761
+
+spring:
+  zipkin:
+    base-url: http://localhost:{port}
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: prometheus

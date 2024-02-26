@@ -1,0 +1,53 @@
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:password@localhost:8761/eureka
+
+spring:
+  application:
+    name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: {kopirati kada se logujes na keycloack - video 5}
+  zipkin:
+    base-url: http://localhost:{port}
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: product-service
+            uri: lb://product-service
+            predicates:
+            - Path=/api/product
+          - id: order-service
+            uri: lb://order-service
+            predicates:
+            - Path=/api/order
+          - id: discovery-server
+            uri: http://localhost:8761
+            predicates:
+              - Path=/eureka/web
+            filters: #removes the parameter when redirecting to 8761
+              - setPath=/
+          - id: discovery-server-static
+            uri: http://localhost:8761
+            predicates:
+              - Path=/eureka/**
+
+
+
+logging:
+  level:
+    root: info
+    org.springframework.cloud.gateway: trace
+server:
+  port: 0
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: prometheus
